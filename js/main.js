@@ -13,14 +13,14 @@ const replay = document.querySelector(".replay");
 const paintBox = document.querySelector(".paintbox");
 
 let audioFileBc = new Audio('carrot/sound/bg.mp3');
-let audioFileBug = new Audio('carrot/sound/bug_pull.mp3');
-let audioFileMonRat = new Audio('carrot/sound/carrot_pull.mp3');
+let audioFileBug = new Audio('carrot/sound/샤우팅.m4a');
+let audioFileMonRat = new Audio('carrot/sound/괴물쥐.m4a');
 let audioFileWin = new Audio('carrot/sound/game_win.mp3');
 
 function carrotPainting(){
   for (var i = 0; i < 10; i++) {
     let bottom = Math.random();
-    bottom=bottom*250;
+    bottom=bottom*200;
     let left = Math.random();
     left = left *700;
     const paintImg = document.createElement("img");
@@ -36,7 +36,6 @@ function carrotPainting(){
         carrotLeft.innerText = 0;
         audioFileBc.pause();
         win.classList.toggle("active");
-        stopBtn.classList.toggle("hidden");
         clearInterval(timerInterval);
         audioFileWin.play();
         return;
@@ -79,7 +78,7 @@ function paintGames(){
 play.addEventListener("click",()=>{
   paintGames();
   play.classList.toggle("hidden");
-  stopBtn.classList.toggle("active");
+  stopBtn.classList.add("active");
   audioFileBc.play();
   carrotLeft.innerText = 10;
   let currentSecond = 10;
@@ -87,10 +86,10 @@ play.addEventListener("click",()=>{
   timerInterval = setInterval(clocks,1000);
   timerInterval;
   function clocks(){
-    if(currentSecond<=0){
+    if(currentSecond===0){
       lose.classList.add("active");
       audioFileBc.pause();
-      stopBtn.classList.add("hidden")
+      clearInterval(timerInterval);
       return;
     }
     currentSecond = currentSecond-1;
@@ -109,12 +108,10 @@ for (let i = 0; i < reset.length; i++){
     paintBox.innerHTML = "";
     if(event.target.parentNode !== button){
       event.target.parentNode.parentNode.classList.toggle("active");
-    }else{
-      event.target.parentNode.classList.toggle("active");
     }
+    event.target.parentNode.classList.remove("active");
+    
     paintGames();
-    play.classList.toggle("hidden");
-    stopBtn.classList.toggle("active");
     audioFileBc.play();
     carrotLeft.innerText = 10;
     let currentSecond = 10;
@@ -122,14 +119,16 @@ for (let i = 0; i < reset.length; i++){
     timerInterval = setInterval(clocks,1000);
     timerInterval;
     function clocks(){
-      if(currentSecond<=0){
+      if(currentSecond===0){
         lose.classList.add("active");
         audioFileBc.pause();
-        stopBtn.classList.add("hidden")
+        clearInterval(timerInterval);
         return;
       }
       currentSecond = currentSecond-1;
-      timer.innerText = `0:${currentSecond}`
+      timer.innerText = `0:${currentSecond}`;
     }
-  })
+    play.classList.add("hidden");
+  }
+  )
 }
