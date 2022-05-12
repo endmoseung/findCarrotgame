@@ -1,3 +1,4 @@
+const button = document.querySelector("button");
 const play = document.querySelector(".play");
 const timer = document.querySelector(".timer");
 const monRat = document.querySelector(".monrat");
@@ -5,9 +6,11 @@ const bug = document.querySelector(".bug");
 const carrotLeft = document.querySelector(".carrot-left");
 const lose = document.querySelector(".lose");
 const win = document.querySelector(".win");
-const reset = document.querySelector(".reset");
-const gameBox = document.querySelector(".gamebox")
-
+const reset = document.querySelectorAll(".reset");
+const gameBox = document.querySelector(".gamebox");
+const stopBtn = document.querySelector(".stop");
+const replay = document.querySelector(".replay");
+const paintBox = document.querySelector(".paintbox");
 
 let audioFileBc = new Audio('carrot/sound/bg.mp3');
 let audioFileBug = new Audio('carrot/sound/bug_pull.mp3');
@@ -25,8 +28,21 @@ function carrotPainting(){
     paintImg.setAttribute('class',"monrat")
     paintImg.style.bottom = bottom+'px';
     paintImg.style.left = left+'px';
-    gameBox.appendChild(paintImg);
-
+    paintBox.appendChild(paintImg);
+    paintImg.addEventListener("click",(event)=>{
+      event.target.remove();
+      audioFileMonRat.play();
+      if(carrotLeft.innerText === '1'){
+        carrotLeft.innerText = 0;
+        audioFileBc.pause();
+        win.classList.toggle("active");
+        stopBtn.classList.toggle("hidden");
+        clearInterval(timerInterval);
+        audioFileWin.play();
+        return;
+      }
+      carrotLeft.innerText = carrotLeft.innerText - 1;
+    })
   }
 }
 function bugPainting(){
@@ -40,8 +56,15 @@ function bugPainting(){
     paintImg.setAttribute('class',"bug")
     paintImg.style.bottom = bottom+'px';
     paintImg.style.left = left+'px';
-    gameBox.appendChild(paintImg);
-
+    paintBox.appendChild(paintImg);
+    paintImg.addEventListener("click",()=>{
+      audioFileBug.play();
+      //화면이 나오면서 졌다고
+      lose.classList.toggle("active");
+      audioFileBc.pause();
+      stopBtn.classList.toggle("hidden");
+      clearInterval(timerInterval);
+    })
   }
 }
 
@@ -55,54 +78,58 @@ function paintGames(){
 
 play.addEventListener("click",()=>{
   paintGames();
-  
+  play.classList.toggle("hidden");
+  stopBtn.classList.toggle("active");
   audioFileBc.play();
   carrotLeft.innerText = 10;
   let currentSecond = 10;
   timer.innerText = `0:${currentSecond}`
-  setInterval(clocks,1000);
+  timerInterval = setInterval(clocks,1000);
+  timerInterval;
   function clocks(){
     if(currentSecond<=0){
       lose.classList.add("active");
       audioFileBc.pause();
+      stopBtn.classList.add("hidden")
       return;
     }
     currentSecond = currentSecond-1;
     timer.innerText = `0:${currentSecond}`
 
-  }
-})
+  }})
 
-bug.addEventListener("click",()=>{
-  audioFileBug.play();
-  //화면이 나오면서 졌다고
-  lose.classList.add("active");
+stopBtn.addEventListener("click",()=>{
+  clearInterval(timerInterval);// 지역변수 안에 있는 timerinterval을 어케끄지 ?
   audioFileBc.pause();
+  replay.classList.toggle("active");
 })
 
-monRat.addEventListener("click",()=>{
-  audioFileMonRat.play();
-  if(carrotLeft.innerText === 0){
-    win.classList.add("active");
-    return;
-  }
-  carrotLeft.innerText = carrotLeft.innerText - 1;
-})
-
-reset.addEventListener("click",()=>{
-  
-  audioFileBc.play();
-  carrotLeft.innerText = 10;
-  let currentSecond = 10;
-  timer.innerText = `0:${currentSecond}`
-  setInterval(clocks,1000);
-  function clocks(){
-    if(currentSecond<=0){
-      lose.classList.add("active");
-      audioFileBc.pause();
-      return;
+for (let i = 0; i < reset.length; i++){
+  reset[i].addEventListener("click",(event)=>{
+    paintBox.innerHTML = "";
+    if(event.target.parentNode !== button){
+      event.target.parentNode.parentNode.classList.toggle("active");
+    }else{
+      event.target.parentNode.classList.toggle("active");
     }
-    currentSecond = currentSecond-1;
-    timer.innerText = `0:${currentSecond}`;
-  }
-})
+    paintGames();
+    play.classList.toggle("hidden");
+    stopBtn.classList.toggle("active");
+    audioFileBc.play();
+    carrotLeft.innerText = 10;
+    let currentSecond = 10;
+    timer.innerText = `0:${currentSecond}`
+    timerInterval = setInterval(clocks,1000);
+    timerInterval;
+    function clocks(){
+      if(currentSecond<=0){
+        lose.classList.add("active");
+        audioFileBc.pause();
+        stopBtn.classList.add("hidden")
+        return;
+      }
+      currentSecond = currentSecond-1;
+      timer.innerText = `0:${currentSecond}`
+    }
+  })
+}
