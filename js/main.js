@@ -11,6 +11,14 @@ const gameBox = document.querySelector(".gamebox");
 const stopBtn = document.querySelector(".stop");
 const replay = document.querySelector(".replay");
 const paintBox = document.querySelector(".paintbox");
+function preventClickStopPb () {
+  paintBox.style.pointerEvents = "none";
+  stopBtn.style.pointerEvents = "none";
+}
+function preventCanStopPb () {
+  paintBox.style.pointerEvents = "all";
+  stopBtn.style.pointerEvents = "all";
+}
 
 let audioFileBc = new Audio('carrot/sound/bg.mp3');
 let audioFileBug = new Audio('carrot/sound/샤우팅.m4a');
@@ -35,6 +43,7 @@ function carrotPainting(){
       if(carrotLeft.innerText === '1'){
         carrotLeft.innerText = 0;
         audioFileBc.pause();
+        preventClickStopPb();
         win.classList.toggle("active");
         clearInterval(timerInterval);
         audioFileWin.play();
@@ -60,8 +69,8 @@ function bugPainting(){
       audioFileBug.play();
       //화면이 나오면서 졌다고
       lose.classList.toggle("active");
+      preventClickStopPb();
       audioFileBc.pause();
-      stopBtn.classList.toggle("hidden");
       clearInterval(timerInterval);
     })
   }
@@ -89,6 +98,7 @@ play.addEventListener("click",()=>{
     if(currentSecond===0){
       lose.classList.add("active");
       audioFileBc.pause();
+      preventClickStopPb();
       clearInterval(timerInterval);
       return;
     }
@@ -115,6 +125,7 @@ for (let i = 0; i < reset.length; i++){
     audioFileBc.play();
     carrotLeft.innerText = 10;
     let currentSecond = 10;
+    preventCanStopPb();
     timer.innerText = `0:${currentSecond}`
     timerInterval = setInterval(clocks,1000);
     timerInterval;
@@ -122,6 +133,7 @@ for (let i = 0; i < reset.length; i++){
       if(currentSecond===0){
         lose.classList.add("active");
         audioFileBc.pause();
+        preventClickStopPb();
         clearInterval(timerInterval);
         return;
       }
