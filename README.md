@@ -1,3 +1,3 @@
 # findCarrotgame
- flashGame that catch the carrot
+ flashGame that catch MonsterRat
  https://endmoseung.github.io/findCarrotgame/ <<link
