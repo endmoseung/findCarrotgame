@@ -11,6 +11,7 @@ const gameBox = document.querySelector(".gamebox");
 const stopBtn = document.querySelector(".stop");
 const replay = document.querySelector(".replay");
 const paintBox = document.querySelector(".paintbox");
+
 function preventClickStopPb () {
   paintBox.style.pointerEvents = "none";
   stopBtn.style.pointerEvents = "none";
@@ -40,6 +41,7 @@ function carrotPainting(){
     paintImg.addEventListener("click",(event)=>{
       event.target.remove();
       audioFileMonRat.play();
+      audioFileMonRat.currentTime = 0;
       if(carrotLeft.innerText === '1'){
         carrotLeft.innerText = 0;
         audioFileBc.pause();
@@ -98,6 +100,7 @@ play.addEventListener("click",()=>{
     if(currentSecond===0){
       lose.classList.add("active");
       audioFileBc.pause();
+      audioFileBug.play();
       preventClickStopPb();
       clearInterval(timerInterval);
       return;
@@ -111,6 +114,7 @@ stopBtn.addEventListener("click",()=>{
   clearInterval(timerInterval);// 지역변수 안에 있는 timerinterval을 어케끄지 ?
   audioFileBc.pause();
   replay.classList.toggle("active");
+  preventClickStopPb();
 })
 
 for (let i = 0; i < reset.length; i++){
@@ -133,8 +137,9 @@ for (let i = 0; i < reset.length; i++){
       if(currentSecond===0){
         lose.classList.add("active");
         audioFileBc.pause();
+        audioFileBug.play();
         preventClickStopPb();
-        clearInterval(timerInterval);
+        clearInterval(timerInterval);  //setinterval이 계속 적용되서 0초가 지난후에도 적용이되므로 clearinterval을 통해 막아주기
         return;
       }
       currentSecond = currentSecond-1;

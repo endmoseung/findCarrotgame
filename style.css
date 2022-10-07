@@ -25,7 +25,7 @@ body{
   margin: 5px 0;
   cursor: pointer;
   position: relative;
-
+  transition: all 100ms ease-in;
 }
 .stop{
   background-color: beige;
@@ -36,6 +36,7 @@ body{
   margin: 5px 0;
   cursor: pointer;
   display: none;
+  transition: all 100ms ease-in;
 }
 .stop:hover{
   transform: scale(1.1);
@@ -60,6 +61,8 @@ body{
   border: 2px solid black;
   border-radius: 4px;
   margin-bottom: 5px;
+  user-select: none;
+  cursor: auto;
 }
 .carrot-left{
   width: 50px;
@@ -71,6 +74,8 @@ body{
   line-height: 55px;
   background-color: RGB(237, 146, 120);
   font-size: 35px;
+  user-select: none;
+  cursor: auto;
 }
 .paintboxmom{
   height: 63%;
@@ -88,6 +93,7 @@ body{
 }
 .bug{
   position: absolute;
+  transition: all 100ms ease-in;
 }
 .bug:hover{
   transform: scale(1.2);
@@ -96,6 +102,7 @@ body{
   width: 50px;
   height: 50px;
   position: absolute;
+  transition: all 100ms ease-in;
 }
 .monrat:hover{
   transform: scale(1.2);
@@ -155,6 +162,7 @@ body{
   font-size: 30px;
   display: none;
   z-index: 100;
+  transition: all 100ms ease-in;
 }
 .replay.active{
   display: block;
